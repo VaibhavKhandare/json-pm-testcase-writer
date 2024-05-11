@@ -116,11 +116,8 @@
                     <button id="clear-json-btn" class="btn btn-danger" type="button" style="margin-top:7px">Clear</button>
                 </div>
         </div>
-        <br/>
         <div class="row">
-        
-            <input type="text" id="search-box" class="form-control" placeholder="Search JSON tree..." style="margin-inline:16px">
-            <br/>
+            <input type="text" id="search-box" class="form-control" placeholder="Search JSON tree..." style="margin: 5px 16px">
             <div class="col-md-12 fix-height-scroll">
                 <div id="json-tree"></div>
             </div>
@@ -203,7 +200,6 @@
             button.click(function() {
                 var inputid = $(this).data('inputid');
                 var keyname = inputSpan.val();
-                console.log('inputid,keyname', inputid,keyname)
                 if(keyname!= undefined && keyname!=null){
                     let clickedKey = `${inputid}.${keyname}`;
                     let clickedValue = null;
@@ -223,7 +219,8 @@
                         ext = `[${key}]`;
                     }
                 var span = $(`<span class="key" data-path=${path+ext}></span>`).text(key);
-                if (typeof data[key] === 'object') {
+                let parsedValue = getJSON(data[key]);
+                if (typeof data[key] === 'object' || parsedValue!=null) {
                     // Recursively create tree for nested objects
                     var collapseButton = $(`<button class="btn btn-sm btn-secondary pi-2 box" data-toggle="tooltip" data-placement="right" title=${path}>&#9660;</button>`); // &#9660; is the Unicode character for down arrow
                     li.append(collapseButton);
@@ -233,10 +230,13 @@
                         $(this).toggleClass('collapsed');
                         $(this).siblings('ul').toggle();
                     });
-                    createJsonTreeWithButtons(data[key], nestedUl, path+ext);
+                    if(parsedValue!=null){
+                        createJsonTreeWithButtons(parsedValue, nestedUl, `JSON.parse(${path+ext})`);
+
+                    }else{
+                        createJsonTreeWithButtons(data[key], nestedUl, path+ext);
+                    }
                     li.append(nestedUl);
-                }else if(getJSON(data[key])!=null){
-                    createJsonTreeWithButtons(JSON.parse(data[key]), li, `JSON.parse(${path+ext})`)
                 } else {
                     // Create button for each key-value pair
                     var button = $('<button class="btn btn-primary box">&nbsp;&#x2B;&nbsp;</button> &nbsp;');
@@ -298,7 +298,6 @@
                     $(this).parentsUntil('.json-tree', 'ul').show();
                     $(this).parentsUntil('.json-tree', 'li').children('button').removeClass('collapsed');
                 } else {
-                    console.log('$(this).find("span")?.data("path")?.includes(searchText)', $(this).find("span")?.data("path"))
                     if($(this).find("span")?.data("path")?.toLowerCase().includes(searchText?.toLowerCase()) || $(this).find("button").data("inputid")?.toLowerCase()?.includes(searchText?.toLowerCase())){
                         $(this).show();
                     }else{
