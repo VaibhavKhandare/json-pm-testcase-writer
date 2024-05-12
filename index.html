@@ -1,311 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Postman TestCase Bench</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Tree Viewer with Input</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- jQuery -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <style>
-/* .json-tree {
+      /* .json-tree {
     position: relative;
     overflow-y: auto;
     max-height: 500px;
 } */
-        .json-tree li {
-            list-style-type: none;
-        }
-        /* .json-tree ul {
+      .json-tree li {
+        list-style-type: none;
+      }
+      /* .json-tree ul {
             position: sticky;
     top: 0;
     z-index: 1; 
         } */
 
-        .json-tree .key {
-            font-weight: bold;
-        }
-        .json-tree button {
-            margin-left: 10px;
-        }
-        .btn-primary {
-            padding: 1px 2px;
-            margin: 1px 0px
-        }
-        .btn-danger {
-            padding: 1px 2px;
-            margin: 1px 0px
-        }
-        .fixed{
-            position: sticky
-        }
-        .mt5{
-            padding:10px
-        }
-        textarea {
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            padding: 8px;
-            border-radius: 0;
-            border: 1px solid #343a40;
-            background-color: #282c34;
-            color: #dcdcdc;
-        }
+      .json-tree .key {
+        font-weight: bold;
+      }
+      .json-tree button {
+        margin-left: 10px;
+      }
+      .btn-primary {
+        padding: 1px 2px;
+        margin: 1px 0px;
+      }
+      .btn-danger {
+        padding: 1px 2px;
+        margin: 1px 0px;
+      }
+      .fixed {
+        position: sticky;
+      }
+      .mt5 {
+        padding: 10px;
+      }
+      textarea {
+        font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        padding: 8px;
+        border-radius: 0;
+        border: 1px solid #343a40;
+        background-color: #282c34;
+        color: #dcdcdc;
+      }
 
-        .fix-height-scroll{
-            max-height: 60vh;
-            overflow-y: auto;
-        }
+      .fix-height-scroll {
+        max-height: 60vh;
+        overflow-y: auto;
+      }
 
-        /* Tooltip width and height */
-        .tooltip-inner {
-            max-width: 90vw;
-            min-width: 50px;
-            max-height: 200px;
-            overflow-y: auto;
-            font-size: 14px;
-        }
+      /* Tooltip width and height */
+      .tooltip-inner {
+        max-width: 90vw;
+        min-width: 50px;
+        max-height: 200px;
+        overflow-y: auto;
+        font-size: 14px;
+      }
 
-        .ul{
-            padding-inline-start:20px !important;
-            margin-inline-start:20px !important
-        }
+      .ul {
+        padding-inline-start: 20px !important;
+        margin-inline-start: 20px !important;
+      }
 
-        .tooltip.bs-tooltip-auto[x-placement^=right] .arrow::before, .tooltip.bs-tooltip-right .arrow::before {
-            border-right-color: #000;
-        }
-        .box{
-            margin: 0px 8px 7px 0px;
-            width: 30px;
-            height: 30px;
-            
-        }
+      .tooltip.bs-tooltip-auto[x-placement^="right"] .arrow::before,
+      .tooltip.bs-tooltip-right .arrow::before {
+        border-right-color: #000;
+      }
+      .box {
+        margin: 0px 8px 7px 0px;
+        width: 30px;
+        height: 30px;
+      }
 
-        .collapsed {
-            transform: rotate(-90deg);
-            transition: transform 0.3s ease-in-out;
-        }
+      .collapsed {
+        transform: rotate(-90deg);
+        transition: transform 0.3s ease-in-out;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="mt5">
-        <h5>Add JSON Below</h5>
-        <div class="row">
-            <div class="col-md-8">
-                <textarea id="json-input" rows="1" cols="1" class="form-control" placeholder="Enter JSON Response here...."></textarea>
-            </div>
-            <div class="col-md-4">
-                <button id="generate-tree-btn" class="btn btn-primary mi-10" style="padding: 5px 10px;">Generate Response JSON Tree</button>
-            </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <h5>PostMan Test Cases</h5>
-                    <textarea id="selected-json" rows="6" cols="50" class="form-control" placeholder="Test Cases are generated here..."></textarea>
-                    <button id="copy-json-btn" class="btn btn-primary" type="button" style="margin-top:7px">Copy</button>
-                    <button id="clear-json-btn" class="btn btn-danger" type="button" style="margin-top:7px">Clear</button>
-                </div>
+      <h5>Add JSON Below</h5>
+      <div class="row">
+        <div class="col-md-8">
+          <textarea
+            id="json-input"
+            rows="1"
+            cols="1"
+            class="form-control"
+            placeholder="Enter JSON Response here...."
+          ></textarea>
         </div>
-        <div class="row">
-            <input type="text" id="search-box" class="form-control" placeholder="Search JSON tree..." style="margin: 5px 16px">
-            <div class="col-md-12 fix-height-scroll">
-                <div id="json-tree"></div>
-            </div>
+        <div class="col-md-4">
+          <button
+            id="generate-tree-btn"
+            class="btn btn-primary mi-10"
+            style="padding: 5px 10px"
+          >
+            Generate Response JSON Tree
+          </button>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h5>PostMan Test Cases</h5>
+          <textarea
+            id="selected-json"
+            rows="6"
+            cols="50"
+            class="form-control"
+            placeholder="Test Cases are generated here..."
+          ></textarea>
+          <button
+            id="copy-json-btn"
+            class="btn btn-primary"
+            type="button"
+            style="margin-top: 7px"
+          >
+            Copy
+          </button>
+          <button
+            id="clear-json-btn"
+            class="btn btn-danger"
+            type="button"
+            style="margin-top: 7px"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <input
+          type="text"
+          id="search-box"
+          class="form-control"
+          placeholder="Search JSON tree..."
+          style="margin: 5px 16px"
+        />
+        <div class="col-md-12 fix-height-scroll">
+          <div id="json-tree"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        var selectedJson = {};
-        var testCases = "";
-        var prescript = "var jsonData = pm.response.json();\n";
+      var selectedJson = {};
+      var testCases = "";
+      var prescript = "var jsonData = pm.response.json();\n";
 
-        $(document).ready(function() {
-            $('#generate-tree-btn').click(function() {
-                generateJsonTree();
-            });
-
-            $('#copy-json-btn').click(function() {
-                navigator.clipboard.writeText(prescript + testCases)
-            });
-
-            $('#clear-json-btn').click(function() {
-                testCases = "";
-                selectedJson = {};
-                updateSelectedJson();
-            });
-
-            $('#search-box').on('input', function() {
-                var searchText = $(this).val().trim().toLowerCase();
-                searchJsonTree(searchText);
-            });
+      $(document).ready(function () {
+        $("#generate-tree-btn").click(function () {
+          generateJsonTree();
         });
 
-        // Function to generate JSON tree with buttons based on input JSON
-        function generateJsonTree() {
-            var jsonInput = $('#json-input').val().trim();
-            if (!jsonInput) {
-                alert('Please enter valid JSON data.');
-                return;
-            }
+        $("#copy-json-btn").click(function () {
+          navigator.clipboard.writeText(prescript + testCases);
+        });
 
-            var jsonData;
-            try {
-                jsonData = JSON.parse(jsonInput);
-            } catch (error) {
-                alert('Invalid JSON format: ' + error.message);
-                return;
-            }
+        $("#clear-json-btn").click(function () {
+          testCases = "";
+          selectedJson = {};
+          updateSelectedJson();
+        });
 
-            // Clear existing tree
-            $('#json-tree').empty();
+        $("#search-box").on("input", function () {
+          var searchText = $(this).val().trim().toLowerCase();
+          searchJsonTree(searchText);
+        });
+      });
 
-            // Create JSON tree with buttons
-            createJsonTreeWithButtons(jsonData, $('#json-tree'),"jsonData");
-            $('[data-toggle="tooltip"]').tooltip();
-
+      // Function to generate JSON tree with buttons based on input JSON
+      function generateJsonTree() {
+        var jsonInput = $("#json-input").val().trim();
+        if (!jsonInput) {
+          alert("Please enter valid JSON data.");
+          return;
         }
 
-        function getJSON(data){
-            try{
-                let json = JSON.parse(data);
-                if(typeof json === 'object'){
-                    return json;
-                }
-            }catch{
-                return null;
-            }
-            return null;
-
+        var jsonData;
+        try {
+          jsonData = JSON.parse(jsonInput);
+        } catch (error) {
+          alert("Invalid JSON format: " + error.message);
+          return;
         }
 
-        // Function to create JSON tree with buttons
-        function createJsonTreeWithButtons(data, parentElement,path) {
-            var ul = $('<ul class="json-tree"></ul>');
-            var li = $('<li></li>');
-            
-            var button = $(`<button class="btn btn-primary box" data-inputid=input-${path}>&nbsp;&#x2B;&nbsp;</button>`);
-            let inputSpan = $(`<input id=input-${path} placeholder="add null checks">`);
-            button.click(function() {
-                var inputid = $(this).data('inputid');
-                var keyname = inputSpan.val();
-                if(keyname!= undefined && keyname!=null){
-                    let clickedKey = `${inputid}.${keyname}`;
-                    let clickedValue = null;
-                    selectedJson[clickedKey] = clickedValue;
-                        testCases = `tests['${clickedKey} should be ${clickedValue}'] = ${clickedKey} == ${typeof clickedValue === 'string' ? "'" + clickedValue + "'" : clickedValue};\n` + testCases;
-                        // Update selected JSON textarea
-                        updateSelectedJson();
-                }
+        // Clear existing tree
+        $("#json-tree").empty();
+
+        // Create JSON tree with buttons
+        createJsonTreeWithButtons(jsonData, $("#json-tree"), "jsonData");
+        $('[data-toggle="tooltip"]').tooltip();
+      }
+
+      function getJSON(data) {
+        try {
+          let json = JSON.parse(data);
+          if (typeof json === "object") {
+            return json;
+          }
+        } catch {
+          return null;
+        }
+        return null;
+      }
+
+      // Function to create JSON tree with buttons
+      function createJsonTreeWithButtons(data, parentElement, path) {
+        var ul = $('<ul class="json-tree"></ul>');
+        var li = $("<li></li>");
+
+        var button = $(
+          `<button class="btn btn-primary box" data-inputid=${path}>&nbsp;&#x2B;&nbsp;</button>`
+        );
+        let inputSpan = $(
+          `<input id=input-${path} placeholder="add null checks">`
+        );
+        button.click(function () {
+          var inputid = $(this).data("inputid");
+          var keyname = inputSpan.val();
+          if (keyname != undefined && keyname != null) {
+            let clickedKey = `${inputid}.${keyname}`;
+            let clickedValue = null;
+            selectedJson[clickedKey] = clickedValue;
+            testCases =
+              `tests['${clickedKey} should be ${clickedValue}'] = ${clickedKey} == ${
+                typeof clickedValue === "string"
+                  ? "'" + clickedValue + "'"
+                  : clickedValue
+              };\n` + testCases;
+            // Update selected JSON textarea
+            updateSelectedJson();
+          }
+        });
+        li.append(button);
+        li.append(inputSpan);
+        ul.append(li);
+        for (var key in data) {
+          li = $("<li></li>");
+          let ext = "." + key;
+          if (!isNaN(key)) {
+            ext = `[${key}]`;
+          }
+          var span = $(
+            `<span class="key" data-path=${path + ext}></span>`
+          ).text(key);
+          let parsedValue = getJSON(data[key]);
+          if (typeof data[key] === "object" || parsedValue != null) {
+            // Recursively create tree for nested objects
+            var collapseButton = $(
+              `<button class="btn btn-sm btn-secondary pi-2 box" data-toggle="tooltip" fallbackPlacement="top" data-placement="right" title=${path}>&#9660;</button>`
+            ); // &#9660; is the Unicode character for down arrow
+            li.append(collapseButton);
+            li.append(span);
+            var nestedUl = $('<ul class="json-tree"></ul>');
+            collapseButton.click(function () {
+              $(this).toggleClass("collapsed");
+              $(this).siblings("ul").toggle();
             });
-            li.append(button);
-            li.append(inputSpan);
-            ul.append(li);
-            for (var key in data) {
-                li = $('<li></li>');
-                let ext = "."+key;
-                    if( !isNaN(key)){
-                        ext = `[${key}]`;
-                    }
-                var span = $(`<span class="key" data-path=${path+ext}></span>`).text(key);
-                let parsedValue = getJSON(data[key]);
-                if (typeof data[key] === 'object' || parsedValue!=null) {
-                    // Recursively create tree for nested objects
-                    var collapseButton = $(`<button class="btn btn-sm btn-secondary pi-2 box" data-toggle="tooltip" data-placement="right" title=${path}>&#9660;</button>`); // &#9660; is the Unicode character for down arrow
-                    li.append(collapseButton);
-                    li.append(span);
-                    var nestedUl = $('<ul class="json-tree"></ul>');
-                    collapseButton.click(function() {
-                        $(this).toggleClass('collapsed');
-                        $(this).siblings('ul').toggle();
-                    });
-                    if(parsedValue!=null){
-                        createJsonTreeWithButtons(parsedValue, nestedUl, `JSON.parse(${path+ext})`);
-
-                    }else{
-                        createJsonTreeWithButtons(data[key], nestedUl, path+ext);
-                    }
-                    li.append(nestedUl);
-                } else {
-                    // Create button for each key-value pair
-                    var button = $('<button class="btn btn-primary box">&nbsp;&#x2B;&nbsp;</button> &nbsp;');
-                    // li.append(button);
-                    li.append(button)
-                li.append(span);
-                var valueSpan = $(`<span data-value=${data[key]}></span>`).text(': ' + JSON.stringify(data[key]));
-                    li.append(valueSpan);
-
-                    button.click(function() {
-                        var clickedKey = $(this).siblings('.key').data('path');;
-                        var clickedValue = $(this).siblings('span').filter(function() {
-                            return $(this).text().startsWith(':');
-                        }).data('value');
-                        // Add selected key-value pair to the JSON object
-                        selectedJson[clickedKey] = clickedValue;
-                        testCases = `tests['${clickedKey} should be ${clickedValue}'] = ${clickedKey} == ${typeof clickedValue === 'string' ? "'" + clickedValue + "'" : clickedValue};\n` + testCases;
-                        // Update selected JSON textarea
-                        updateSelectedJson();
-                    });
-                }
-                ul.append(li);
+            if (parsedValue != null) {
+              createJsonTreeWithButtons(
+                parsedValue,
+                nestedUl,
+                `JSON.parse(${path + ext})`
+              );
+            } else {
+              createJsonTreeWithButtons(data[key], nestedUl, path + ext);
             }
-            // li = $('<li></li>');
-            // var inputSpan = $(`<input id=input-${path} placeholder="add null checks">`);
-            // li.append(inputSpan);
-            // var button = $(`<button class="btn btn-primary" data-inputid=input-${path}>&nbsp;&#x2B;&nbsp;</button>`);
+            li.append(nestedUl);
+          } else {
+            // Create button for each key-value pair
+            var button = $(
+              '<button class="btn btn-primary box">&nbsp;&#x2B;&nbsp;</button> &nbsp;'
+            );
             // li.append(button);
-            // button.click(function() {
-            //     var inputid = $(this).data('inputid');
-            //     var keyname = $(`#${inputid}`).val().trim();
-            //     let clickedKey = `${inputid}.${keyname}`;
-            //     let clickedValue = null;
+            li.append(button);
+            li.append(span);
+            var valueSpan = $(`<span data-value=${data[key]}></span>`).text(
+              ": " + JSON.stringify(data[key])
+            );
+            li.append(valueSpan);
 
-            //     selectedJson[clickedKey] = clickedValue;
-            //         testCases = `tests['${clickedKey} should be ${clickedValue}'] = ${clickedKey} == ${typeof clickedValue === 'string' ? "'" + clickedValue + "'" : clickedValue};\n` + testCases;
-            //         // Update selected JSON textarea
-            //         updateSelectedJson();
-            // });
-            // ul.append(li);
-            parentElement.append(ul);
-            $('[data-toggle="tooltip"]').tooltip();
-        }
-
-        // Function to update selected JSON textarea
-        function updateSelectedJson() {
-            // console.log('selectedJson', selectedJson)
-            // $('#selected-json').val(JSON.stringify(selectedJson, null, 4));
-            $("#selected-json").val(prescript+testCases);
-        }
-
-        function searchJsonTree(searchText) {
-            var treeElements = $('.json-tree li');
-            treeElements.each(function() {
-                var text = $(this).text().toLowerCase();
-                if (text.includes(searchText)) {
-                    $(this).show();
-                    // Expand all parent elements
-                    $(this).parentsUntil('.json-tree', 'ul').show();
-                    $(this).parentsUntil('.json-tree', 'li').children('button').removeClass('collapsed');
-                } else {
-                    if($(this).find("span")?.data("path")?.toLowerCase().includes(searchText?.toLowerCase()) || $(this).find("button").data("inputid")?.toLowerCase()?.includes(searchText?.toLowerCase())){
-                        $(this).show();
-                    }else{
-                        $(this).hide();
-                    }
-                }
+            button.click(function () {
+              var clickedKey = $(this).siblings(".key").data("path");
+              var clickedValue = $(this)
+                .siblings("span")
+                .filter(function () {
+                  return $(this).text().startsWith(":");
+                })
+                .data("value");
+              // Add selected key-value pair to the JSON object
+              selectedJson[clickedKey] = clickedValue;
+              testCases =
+                `tests['${clickedKey} should be ${clickedValue}'] = ${clickedKey} == ${
+                  typeof clickedValue === "string"
+                    ? "'" + clickedValue + "'"
+                    : clickedValue
+                };\n` + testCases;
+              // Update selected JSON textarea
+              updateSelectedJson();
             });
+          }
+          ul.append(li);
         }
+        // li = $('<li></li>');
+        // var inputSpan = $(`<input id=input-${path} placeholder="add null checks">`);
+        // li.append(inputSpan);
+        // var button = $(`<button class="btn btn-primary" data-inputid=input-${path}>&nbsp;&#x2B;&nbsp;</button>`);
+        // li.append(button);
+        // button.click(function() {
+        //     var inputid = $(this).data('inputid');
+        //     var keyname = $(`#${inputid}`).val().trim();
+        //     let clickedKey = `${inputid}.${keyname}`;
+        //     let clickedValue = null;
+
+        //     selectedJson[clickedKey] = clickedValue;
+        //         testCases = `tests['${clickedKey} should be ${clickedValue}'] = ${clickedKey} == ${typeof clickedValue === 'string' ? "'" + clickedValue + "'" : clickedValue};\n` + testCases;
+        //         // Update selected JSON textarea
+        //         updateSelectedJson();
+        // });
+        // ul.append(li);
+        parentElement.append(ul);
+        $('[data-toggle="tooltip"]').tooltip();
+      }
+
+      // Function to update selected JSON textarea
+      function updateSelectedJson() {
+        // console.log('selectedJson', selectedJson)
+        // $('#selected-json').val(JSON.stringify(selectedJson, null, 4));
+        $("#selected-json").val(prescript + testCases);
+      }
+
+      function searchJsonTree(searchText) {
+        var treeElements = $(".json-tree li");
+        treeElements.each(function () {
+          var text = $(this).text().toLowerCase();
+          if (text.includes(searchText)) {
+            $(this).show();
+            // Expand all parent elements
+            $(this).parentsUntil(".json-tree", "ul").show();
+            $(this)
+              .parentsUntil(".json-tree", "li")
+              .children("button")
+              .removeClass("collapsed");
+          } else {
+            if (
+              $(this)
+                .find("span")
+                ?.data("path")
+                ?.toLowerCase()
+                .includes(searchText?.toLowerCase()) ||
+              $(this)
+                .find("button")
+                .data("inputid")
+                ?.toLowerCase()
+                ?.includes(searchText?.toLowerCase())
+            ) {
+              $(this).show();
+            } else {
+              $(this).hide();
+            }
+          }
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
