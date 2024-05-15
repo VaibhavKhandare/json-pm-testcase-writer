@@ -361,11 +361,27 @@
         $("#selected-json").val(prescript + testCases);
       }
 
+      function containsWord(text, wordList) {
+        for (var searchText of wordList){
+          if (searchText!='' && text.includes(searchText)) {
+            return true;
+          }
+        }
+        return false;
+      }
+
       function searchJsonTree(searchText) {
+
+        if(!!!searchText){
+          return;
+        }
+        console.log('searc', searchText)
+        var searchTexts = searchText.split(",");
+        console.log('first', searchTexts)
         var treeElements = $(".json-tree li");
         treeElements.each(function () {
           var text = $(this).text().toLowerCase();
-          if (text.includes(searchText)) {
+          if ( containsWord(text, searchTexts)) {
             $(this).show();
             // Expand all parent elements
             $(this).parentsUntil(".json-tree", "ul").show();
