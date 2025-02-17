@@ -322,11 +322,11 @@
               // Add selected key-value pair to the JSON object
               selectedJson[clickedKey] = clickedValue;
               testCases =
-                `tests['${clickedKey} should be ${clickedValue}'] = ${clickedKey} == ${
+                `try{tests['${clickedKey} should be ${clickedValue}'] = ${clickedKey} == ${
                   typeof clickedValue === "string"
                     ? "'" + clickedValue + "'"
                     : clickedValue
-                };\n` + testCases;
+                };\n` + testCases + "} catch (e) {}";
               // Update selected JSON textarea
               updateSelectedJson();
             });
